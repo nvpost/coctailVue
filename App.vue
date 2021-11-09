@@ -1,11 +1,12 @@
 <template>
   <div>
 
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about/25">About</router-link>
       
-    </div>
+    </div> -->
+
     <router-view/>
 
       <!-- <ColapseFilters
@@ -34,7 +35,7 @@ import M from 'materialize-css'
 
 import {tags} from './data/tags'
 import {tools} from './data/tools'
-import {ingredients} from './data/ingredients'
+import {ings} from './data/ingredients'
 import {coctails} from './data/coctails'
 
 export default {
@@ -46,41 +47,35 @@ export default {
   },
   mounted () {
     M.AutoInit()
+    
   },
 
 
   data: () => ({
     tagsData: tags,
     toolsData: tools,
-    ingsData: ingredients,
+    ingsData: ings,
     coctailData: coctails,
     pageStep: 10,
+    filtered_coctail_count:0,
 
   }),
+  created(){
+    // this.$store.commit('AddOrigin', {obj:tags, fieldName:'tag', title:'Категории', model:'tags'})
+    // this.$store.commit('AddOrigin', {obj:ings, fieldName:'ingredient', title:'Ингредиенты', model:'ings'})
+    // this.$store.commit('AddOrigin', {obj:tools, fieldName:'name', title:'Штуки', model:'tools'})
+
+
+    this.$store.commit('uniqAndCount', {obj:tags, fieldName:'tag', title:'Категории', model:'tags'})
+    this.$store.commit('uniqAndCount', {obj:ings, fieldName:'ingredient', title:'Ингредиенты', model:'ings'})
+    this.$store.commit('uniqAndCount', {obj:tools, fieldName:'name', title:'Штуки', model:'tools'})
+
+    // console.log(this.$store.getters.get_tags)
+    // console.log(this.$store.getters.get_tools)
+    // console.log(this.$store.getters.get_ings)
+  },
+
   methods:{
-    uniqAndCount(obj, fieldName, title, model){
-
-        let namedArr = localStorage.getItem('cApp_'+model)
-        console.log('cApp_'+model)
-        if(namedArr){
-          return( JSON.parse(namedArr))
-        }
-
-        const unique = [...new Set(obj.map(item => item[fieldName]))];
-        let uniqueAndCountArr = []
-        unique.forEach((i)=>{
-            let count = obj.filter((item)=>{
-                return item[fieldName] == i
-            }).length
-            uniqueAndCountArr.push({'tag':i, 'count':count})
-        })
-        uniqueAndCountArr.sort((min, max) => max.count - min.count);
-        
-        namedArr = {'title': title, 'model': model, tags:uniqueAndCountArr}
-        localStorage.setItem('cApp_'+model, JSON.stringify(namedArr))
-        console.log(JSON.stringify(namedArr))
-        return(namedArr)
-    },
     coctailSetFoo(start, step){
       return this.coctailData.slice(start, step)
     },

@@ -1,16 +1,17 @@
 <template>
     <div>
+
         <div class="mychip chip"
-        v-for="(t, index) in tags.tags"
+        v-for="(t, index) in tagsData.tags"
         :class="setActiveClass(tags.model, t.tag)?'chip_active':''"
         @click="localAddTag(t.tag, tags.model)"
         :key="index"
         >
             {{t.tag}} ({{t.count}})
-            <i class="close material-icons"
+            <!-- <i class="no-active material-icons"
             v-if="setActiveClass(tags.model, t.tag)"
             >close
-            </i>
+            </i> -->
         </div>
 
     </div>
@@ -26,23 +27,31 @@ export default({
         tags: Object,
     },
     data: () => ({
-        filters:{}
+        filters:{},
+        tagsData:{},
     }),
+    created(){
+        this.tagsData = this.tags
+        // console.log(this.tagsData)
+    },
+    updated(){
+        // console.log('updated')
+        // this.tagsData = this.tags
+        // console.log(this.tagsData)
+    },
     methods:{
         localAddTag(t, tags){
             let payload = {'tag':t, 'field':tags}
             this.$store.commit('add_tag', payload)
- 
-
             this.filters = this.$store.getters.get_fiters
-            console.log(this.filters)
+            // this.$emit('reloadData', 'data')
+            // console.log(tags)
+            this.tagsData = this.$store.getters['get_'+tags]
+            // console.log(this.tagsData)
         },
         setActiveClass(model, tag){
             if(this.filters[model] && this.filters[model].indexOf(tag)!=-1){
                 return true
-                // if(this.filters[model].indexOf(tag)!=-1){
-                //     return true
-                // }
             }
             
         }

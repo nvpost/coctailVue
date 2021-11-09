@@ -6,7 +6,9 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view/> -->
-
+    <div>
+      Найдено:{{filtered_coctail_count}}
+    </div>  
       <ColapseFilters
         :tags="tagsData"
         :ings="ingsData"
@@ -29,9 +31,9 @@ import M from 'materialize-css'
 
 import Cards from '../components/Cards'
 
-import {tags} from '../data/tags'
-import {tools} from '../data/tools'
-import {ings} from '../data/ingredients'
+// import {tags} from '../data/tags'
+// import {tools} from '../data/tools'
+// import {ings} from '../data/ingredients'
 // import {coctails} from '../data/coctails'
 
 export default {
@@ -52,6 +54,7 @@ export default {
     ingsData: {},
     coctailData: {},
     pageStep: 10,
+    filtered_coctail_count: 0,
 
   }),
 
@@ -59,19 +62,27 @@ export default {
 
   created(){
 
-    this.$store.commit('uniqAndCount', {obj:tags, fieldName:'tag', title:'Категории', model:'tags'})
-    this.$store.commit('uniqAndCount', {obj:ings, fieldName:'ingredient', title:'Ингредиенты', model:'ings'})
-    this.$store.commit('uniqAndCount', {obj:tools, fieldName:'name', title:'Штуки', model:'tools'})
-
-    
     this.tagsData = this.$store.getters.get_tags
     this.ingsData = this.$store.getters.get_ings
     this.toolsData = this.$store.getters.get_tools
     this.coctailData = this.$store.getters.get_coctails
 
-  },
-  methods:{
+    this.filtered_coctail_count = this.$store.getters.get_filtered_coctails
 
+
+  },
+
+  methods:{
+    // reloadData(d){
+    //   console.log(d)
+    //       this.tagsData = this.$store.getters.get_tags
+    //       this.ingsData = this.$store.getters.get_ings
+    //       this.toolsData = this.$store.getters.get_tools
+    //       this.coctailData = this.$store.getters.get_coctails
+    //       this.filtered_coctail_count = this.$store.getters.get_filtered_coctails
+
+    //       console.log(this.tagsData)
+    // },
 
     // uniqAndCount(obj, fieldName, title, model){
 

@@ -4,7 +4,7 @@
           <div class="row"  v-for="(coctail, c_item) in coctailSet" :key="c_item">
               <!-- {{coctail}}
               {{coctail.name}} -->
-                <div class="col s12 m7">
+                <div class="col s12">
                 <div class="card">
                     <div class="card-image">
                     <img :src="prepare_src(coctail.src)">

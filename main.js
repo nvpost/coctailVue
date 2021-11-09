@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex';
 import App from './App.vue'
 
-import Filters from './store/filters'
 
 import 'materialize-css/dist/css/materialize.min.css'
 
@@ -17,7 +16,6 @@ Vue.config.productionTip = false
 new Vue({
   Vuex,
   store,
-  Filters,
   router,
   render: h => h(App)
 }).$mount('#app')

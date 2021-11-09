@@ -4,12 +4,12 @@
             <li>
             <div class="collapsible-header">
                 <i class="material-icons">apps</i>
-                {{tags.title}}
+                {{tags.title}} (Доступно: {{tags.tags.length}})
             </div>
             <div class="collapsible-body">
                 <TagsList 
+               
                     :tags="tags"
-                    @addTag="addTag"
                 />
             </div>
             </li>
@@ -19,10 +19,8 @@
                 {{ings.title}}
             </div>
             <div class="collapsible-body">
-
                 <TagsList 
                     :tags="ings"
-                    @addTag="addTag"
                 />
             </div>
             </li>
@@ -34,7 +32,6 @@
             <div class="collapsible-body">
                 <TagsList 
                     :tags="tools"
-                    @addTag="addTag"
                 />
             </div>
             </li>
@@ -59,7 +56,13 @@ export default({
     methods:{
         addTag(t, tags){
             this.$emit('setModel', t, tags)
+        },
+        tagsLength(){
+            return this.tags.length
         }
+
+
+
     }
 
 })
