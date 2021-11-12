@@ -4,11 +4,10 @@
             <li>
             <div class="collapsible-header">
                 <i class="material-icons">apps</i>
-                {{tags.title}} (Доступно: {{tags.tags.length}})
+                {{tags.title}} (Доступно: {{$store.state.tags.tags.length}})
             </div>
             <div class="collapsible-body">
                 <TagsList 
-               
                     :tags="tags"
                 />
             </div>
@@ -16,7 +15,7 @@
             <li>
             <div class="collapsible-header">
                 <i class="material-icons">blur_on</i>
-                {{ings.title}}
+                {{ings.title}} (Доступно: {{$store.state.ings.tags.length}})
             </div>
             <div class="collapsible-body">
                 <TagsList 
@@ -27,7 +26,7 @@
             <li>
             <div class="collapsible-header">
                 <i class="material-icons">local_dining</i>
-                {{tools.title}}
+                {{tools.title}} (Доступно: {{$store.state.tools.tags.length}})
             </div>
             <div class="collapsible-body">
                 <TagsList 
@@ -52,17 +51,6 @@ export default({
         tags: Object,
         tools: Object,
         ings: Object
-    },
-    methods:{
-        addTag(t, tags){
-            this.$emit('setModel', t, tags)
-        },
-        tagsLength(){
-            return this.tags.length
-        }
-
-
-
     }
 
 })

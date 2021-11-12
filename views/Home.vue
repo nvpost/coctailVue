@@ -7,7 +7,7 @@
     </div>
     <router-view/> -->
     <div>
-      Найдено:{{filtered_coctail_count}}
+      Найдено: {{ $store.state.coctails.length }}
     </div>  
       <ColapseFilters
         :tags="tagsData"
@@ -54,66 +54,35 @@ export default {
     ingsData: {},
     coctailData: {},
     pageStep: 10,
-    filtered_coctail_count: 0,
 
   }),
 
   
-
   created(){
 
-    this.tagsData = this.$store.getters.get_tags
-    this.ingsData = this.$store.getters.get_ings
-    this.toolsData = this.$store.getters.get_tools
-    this.coctailData = this.$store.getters.get_coctails
+    // this.tagsData = this.$store.getters.get_tags
+    // this.ingsData = this.$store.getters.get_ings
+    // this.toolsData = this.$store.getters.get_tools
 
-    this.filtered_coctail_count = this.$store.getters.get_filtered_coctails
+    this.tagsData = this.$store.state.tags
+    this.ingsData = this.$store.state.ings
+    this.toolsData = this.$store.state.tools
+
+    this.coctailData = this.$store.state.coctails
+
+    // this.filtered_coctail_count = this.$store.getters.get_filtered_coctails
 
 
   },
 
+
   methods:{
-    // reloadData(d){
-    //   console.log(d)
-    //       this.tagsData = this.$store.getters.get_tags
-    //       this.ingsData = this.$store.getters.get_ings
-    //       this.toolsData = this.$store.getters.get_tools
-    //       this.coctailData = this.$store.getters.get_coctails
-    //       this.filtered_coctail_count = this.$store.getters.get_filtered_coctails
 
-    //       console.log(this.tagsData)
-    // },
-
-    // uniqAndCount(obj, fieldName, title, model){
-
-    //     let namedArr = localStorage.getItem('cApp_'+model)
-    //     console.log('cApp_'+model)
-    //     if(namedArr){
-    //       return( JSON.parse(namedArr))
-    //     }
-
-    //     const unique = [...new Set(obj.map(item => item[fieldName]))];
-    //     let uniqueAndCountArr = []
-    //     unique.forEach((i)=>{
-    //         let count = obj.filter((item)=>{
-    //             return item[fieldName] == i
-    //         }).length
-    //         uniqueAndCountArr.push({'tag':i, 'count':count})
-    //     })
-    //     uniqueAndCountArr.sort((min, max) => max.count - min.count);
-        
-    //     namedArr = {'title': title, 'model': model, tags:uniqueAndCountArr}
-    //     localStorage.setItem('cApp_'+model, JSON.stringify(namedArr))
-    //     console.log(JSON.stringify(namedArr))
-    //     return(namedArr)
-    // },
     coctailSetFoo(start, step){
-      return this.coctailData.slice(start, step)
+      let  coctailsCatalog = this.$store.state.coctails
+      return coctailsCatalog.slice(start, step)
     },
 
-    setModel(t, model){
-      console.log(t, model)
-    },
     removeLocalItems(){
       localStorage.removeItem('cApp_tags')
       localStorage.removeItem('cApp_ings')

@@ -28,25 +28,24 @@ export default new Vuex.Store({
       pageStep: 10,
     },
     getters: {
-        get_fiters(state){
-            return state.filters
-        },
-        get_tags(state){
-          return state.tags
-        },
-        get_tools(state){
-          return state.tools
-        },
-        get_ings(state){
-          return state.ings
-        },
-        get_coctails(state){
-          return state.coctails
-        
-        },
-        get_filtered_coctails(state){
-          return state.coctails.length
-        },
+        // get_fiters(state){
+        //     return state.filters
+        // },
+        // get_tags(state){
+        //   return state.tags
+        // },
+        // get_tools(state){
+        //   return state.tools
+        // },
+        // get_ings(state){
+        //   return state.ings
+        // },
+        // get_coctails(state){
+        //   return state.coctails
+        // },
+        // get_filtered_coctails(state){
+        //   return state.coctails.length
+        // },
     },
     actions: {
         get_coctail_from_id(context, id){
@@ -55,11 +54,7 @@ export default new Vuex.Store({
           let coctail = coctails.filter(i=>{
             return i.id == id 
           })
-          console.log(coctail)
           return coctail
-        },
-        test_foo(context){
-          console.log(context)
         }
 
 
@@ -74,17 +69,18 @@ export default new Vuex.Store({
           if(idx==-1){
             state.filters[field].push(tag)
             this.commit('filter_coctail')
-            
+            console.log('нажали')
             return
           }else{
             
             state.filters[field].splice(idx, 1)
             this.commit('filter_coctail')
+            console.log('отжали')
           }
         },
 
 
-        filter_coctail(state){ //lodash test
+        filter_coctail(state){ 
 
           let filters = state.filters
           let coctails = state.coctails
@@ -98,12 +94,9 @@ export default new Vuex.Store({
           }
 
           for(let filter in filters){
-
+            
             let filterName = tagsName[filter]
 
-            // console.log(filter, filterName)
-
-            // console.log(filter, filterName, filters[filter])
             if(filters[filter].length>0){
               let line_filtered_idx = []
               let origin_tags = state[filter+"_origin"]
@@ -111,9 +104,6 @@ export default new Vuex.Store({
                 line_filtered_idx = []
                 let fi = filters[filter][filter_item]
                 
-                // console.log(filter)
-                 console.log(fi)
-                 console.log(filterName)
 
                 for (let otr in origin_tags){ //otr - origin tag row
                   let c_id = origin_tags[otr]['coctail_id']
@@ -133,6 +123,7 @@ export default new Vuex.Store({
               }
             }
           }
+          console.log(state.filtered_coctail_idx)
           filtered_coctails = coctails.filter(x=>state.filtered_coctail_idx.includes(x.coctail_id))
           
           this.commit('uniqAndCount', {obj:state.tags_origin, fieldName:'tag', title:'Категории', model:'tags'})
@@ -144,7 +135,6 @@ export default new Vuex.Store({
           return filtered_coctails
         },
         
-
         uniqAndCount(state, paylod){
           // console.log(paylod)
           let obj = paylod.obj

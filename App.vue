@@ -1,25 +1,9 @@
 <template>
   <div>
 
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about/25">About</router-link>
-      
-    </div> -->
 
     <router-view/>
 
-      <!-- <ColapseFilters
-        :tags="uniqAndCount(tagsData, 'tag', 'Категории', 'tags')"
-        :ings="uniqAndCount(ingsData, 'ingredient', 'Ингредиенты', 'ings')"
-        :tools="uniqAndCount(toolsData, 'name', 'Штуки', 'tools')"
-        
-        @setModel="setModel"
-      ></ColapseFilters>
-        
-      <Cards
-        :coctailSet="coctailSetFoo(0, pageStep)"
-      ></Cards> -->
 
 
   </div>
@@ -70,9 +54,7 @@ export default {
     this.$store.commit('uniqAndCount', {obj:ings, fieldName:'ingredient', title:'Ингредиенты', model:'ings'})
     this.$store.commit('uniqAndCount', {obj:tools, fieldName:'name', title:'Штуки', model:'tools'})
 
-    // console.log(this.$store.getters.get_tags)
-    // console.log(this.$store.getters.get_tools)
-    // console.log(this.$store.getters.get_ings)
+
   },
 
   methods:{
