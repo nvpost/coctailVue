@@ -18,6 +18,9 @@
       <Cards
         :coctailSet="coctailSetFoo(0, pageStep)"
       ></Cards>
+      <Pagination>  
+      
+      </Pagination>  
 
 
   </div>
@@ -30,6 +33,7 @@ import ColapseFilters from '../components/colapseFilters.vue'
 import M from 'materialize-css'
 
 import Cards from '../components/Cards'
+import Pagination from '../components/Pagination'
 
 // import {tags} from '../data/tags'
 // import {tools} from '../data/tools'
@@ -41,7 +45,8 @@ export default {
 
   components: {
     ColapseFilters,
-    Cards
+    Cards,
+    Pagination
   },
   mounted () {
     M.AutoInit()

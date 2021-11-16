@@ -9,20 +9,30 @@
             <li class="waves-effect"><a href="#!">5</a></li>
             <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
         </ul>
+        <span>
+             {{filteredCount}} ({{pagesCount()}})
+        </span>    
     </div>
 </template>
 
 <script>
 export default {
     name: 'Pagination',
-    deta:()=>{
-        return{
-
-        }
+    data: () => ({
+            filteredCount: this.$store.state.coctails.length,
+            pageStep: this.$store.state.pageStep
+    }),
+    created(){
+        console.log(this.$store.state.coctails.length)
     },
-    props:{
-        itemCount: number,
-        pageStep: number,
+    methods:{
+        pagesCount(){
+           return this.filteredCount/this.pageStep
+        }
     }
+    // props:{
+    //     itemCount: number,
+    //     pageStep: number,
+    // }
 }
 </script>
