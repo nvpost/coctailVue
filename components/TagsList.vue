@@ -38,16 +38,11 @@ export default({
             let payload = {'tag':t, 'field':tags}
             this.$store.commit('add_tag', payload)
             this.filters = this.$store.state.filters
-            // this.filters = this.$store.getters.get_fiters
-            // console.log(this.$store.state.filters)
-            
-            // this.$emit('reloadData', 'data')
-            // console.log(tags)
+
 
             this.tagsData = this.$store.getters['get_'+tags]
             this.tagsData = this.$store.state[tags]
-            // console.log(this.$store.state[tags])
-            // this.$emit('reloadCounter', this.tagsData.tags.length)
+
 
         },
         setActiveClass(model, tag){

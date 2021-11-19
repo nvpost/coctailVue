@@ -16,9 +16,11 @@
       ></ColapseFilters>
         
       <Cards
-        :coctailSet="coctailSetFoo(0, pageStep)"
+        :coctailSet="coctailSetFoo((currentPage-1)*pageStep, currentPage*pageStep)"
       ></Cards>
-      <Pagination>  
+      <Pagination
+        @setPage='setPage'
+      >  
       
       </Pagination>  
 
@@ -27,18 +29,13 @@
 </template>
 
 <script>
-//localStorage.removeItem('cApp_ings')
-//import TagsList from './components/TagsList';
+
 import ColapseFilters from '../components/colapseFilters.vue'
 import M from 'materialize-css'
 
 import Cards from '../components/Cards'
 import Pagination from '../components/Pagination'
 
-// import {tags} from '../data/tags'
-// import {tools} from '../data/tools'
-// import {ings} from '../data/ingredients'
-// import {coctails} from '../data/coctails'
 
 export default {
   name: 'App',
@@ -59,15 +56,12 @@ export default {
     ingsData: {},
     coctailData: {},
     pageStep: 10,
+    currentPage: 1
 
   }),
 
   
   created(){
-
-    // this.tagsData = this.$store.getters.get_tags
-    // this.ingsData = this.$store.getters.get_ings
-    // this.toolsData = this.$store.getters.get_tools
 
     this.tagsData = this.$store.state.tags
     this.ingsData = this.$store.state.ings
@@ -75,8 +69,7 @@ export default {
 
     this.coctailData = this.$store.state.coctails
 
-    // this.filtered_coctail_count = this.$store.getters.get_filtered_coctails
-
+    this.currentPage = this.$store.state.currentPage
 
   },
 
@@ -92,6 +85,9 @@ export default {
       localStorage.removeItem('cApp_tags')
       localStorage.removeItem('cApp_ings')
       localStorage.removeItem('cApp_tools')
+    },
+    setPage(page_num){
+      this.currentPage = page_num  
     }
   }
 };

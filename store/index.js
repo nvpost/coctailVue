@@ -26,6 +26,7 @@ export default new Vuex.Store({
       filtered_coctail_idx: [],
       flatten_c_id:[],
       pageStep: 10,
+      currentPage: 1
     },
     getters: {
         // get_fiters(state){
