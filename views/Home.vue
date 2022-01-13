@@ -6,8 +6,13 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view/> -->
+    <a class="btn "
+      @click="restart()"    
+    >
+      <i class="material-icons">autorenew</i>
+    </a>
     <div>
-      Найдено: {{ $store.state.coctails.length }}
+      Найдено: {{ $store.state.filtered_coctails.length }}
     </div>  
       <ColapseFilters
         :tags="tagsData"
@@ -18,6 +23,7 @@
       <Cards
         :coctailSet="coctailSetFoo((currentPage-1)*pageStep, currentPage*pageStep)"
       ></Cards>
+
       <Pagination
         @setPage='setPage'
       >  
@@ -67,7 +73,11 @@ export default {
     this.ingsData = this.$store.state.ings
     this.toolsData = this.$store.state.tools
 
+    // console.log(this.tagsData)
+
     this.coctailData = this.$store.state.coctails
+// Присваиваем первоначальный набор коктейлей, дальше работаем с отфильтрованным
+    this.$store.state.filtered_coctails = this.$store.state.coctails
 
     this.currentPage = this.$store.state.currentPage
 
@@ -77,7 +87,7 @@ export default {
   methods:{
 
     coctailSetFoo(start, step){
-      let  coctailsCatalog = this.$store.state.coctails
+      let  coctailsCatalog = this.$store.state.filtered_coctails
       return coctailsCatalog.slice(start, step)
     },
 
@@ -88,6 +98,11 @@ export default {
     },
     setPage(page_num){
       this.currentPage = page_num  
+    },
+    restart(){
+      window.location.reload()
+      // this.$store.commit('stateRestart')
+      // this.$store.state.filtered_coctails = this.$store.state.coctails
     }
   }
 };

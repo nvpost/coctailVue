@@ -6,11 +6,8 @@
         @click="localAddTag(t.tag, tags.model)"
         :key="index"
         >
-            {{t.tag}} ({{t.count}})
-            <!-- <i class="no-active material-icons"
-            v-if="setActiveClass(tags.model, t.tag)"
-            >close
-            </i> -->
+            {{t.tag}} <span v-if="!setActiveClass(tags.model, t.tag)">({{t.count}})</span>
+
         </div>
 
     </div>
@@ -18,7 +15,6 @@
 
 <script>
 
-//mybtn waves-effect waves-light btn-small
 
 export default({
     name: 'TagsList',

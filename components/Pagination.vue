@@ -26,7 +26,7 @@
             </li>
         </ul>
         <span>
-             Показано с {{(currentPage-1)*pageStep + 1}} по {{(currentPage)*pageStep}} из {{this.$store.state.coctails.length}} 
+             Показано с {{(currentPage-1)*pageStep + 1}} по {{(currentPage)*pageStep}} из {{this.$store.state.filtered_coctails.length}} 
              (всего страниц {{pagesCount()}})
         </span>   
 
@@ -42,14 +42,14 @@ export default {
             currentPage: 1,
     }),
     created(){
-        this.filteredCount = this.$store.state.coctails.length
+        this.filteredCount = this.$store.state.filtered_coctails.length
         this.pageStep = this.$store.state.pageStep
         this.currentPage = this.$store.state.currentPage
     },
     methods:{
         pagesCount(){
         
-           return Math.ceil(this.$store.state.coctails.length/this.pageStep)
+           return Math.ceil(this.$store.state.filtered_coctails.length/this.pageStep)
         },
         setPage(i, idx){
             console.log(i, idx)

@@ -1,5 +1,6 @@
 <template>
-   <div>
+   <div class="row" >
+       <div class="col s12">
         <ul class="collapsible">
             <li>
             <div class="collapsible-header">
@@ -35,6 +36,7 @@
             </div>
             </li>
         </ul>
+        </div>
     </div> 
 
 </template>

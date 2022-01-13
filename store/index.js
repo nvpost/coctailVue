@@ -5,29 +5,32 @@ import {coctails} from '../data/coctails'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-    filters:{
-        tags:[],
-        tools:[],
-        ings:[],
-      },
-      set_len: 0,
-      origin_tags: {},
-      origin_tools: {},
-      origin_ings: {},
 
-      tags: {},
-      tools: {},
-      ings: {},
-      flag_and: false, // for multiply select
-      coctails: coctails,
-      filtered_coctails: {},
-      filtered_coctail_idx: [],
-      flatten_c_id:[],
-      pageStep: 10,
-      currentPage: 1
+let stateTemplate = {
+  filters:{
+      tags:[],
+      tools:[],
+      ings:[],
     },
+    set_len: 0,
+    origin_tags: {},
+    origin_tools: {},
+    origin_ings: {},
+
+    tags: {},
+    tools: {},
+    ings: {},
+    flag_and: false, // for multiply select
+    coctails: coctails,
+    filtered_coctails: {},
+    filtered_coctail_idx: [],
+    flatten_c_id:[],
+    pageStep: 10,
+    currentPage: 1
+  }
+
+export default new Vuex.Store({
+  state: stateTemplate,
     getters: {
         // get_fiters(state){
         //     return state.filters
@@ -69,23 +72,52 @@ export default new Vuex.Store({
           
           if(idx==-1){
             state.filters[field].push(tag)
+            //console.log(state.filters[field])
             this.commit('filter_coctail')
             console.log('нажали')
+            // console.log(state.filters[field])
+            // console.log(state.tags.tags)
             return
           }else{
             
             state.filters[field].splice(idx, 1)
+            //console.log(state.filters[field])
             this.commit('filter_coctail')
+            state.filtered_coctail_idx = ""
             console.log('отжали')
+            // console.log(state.filters[field])
+            // console.log(state.tags.tags)
           }
         },
 
 
         filter_coctail(state){ 
 
+
+
           let filters = state.filters
           let coctails = state.coctails
           let filtered_coctails = {}
+          let filtered_ids = []
+
+
+          // если фильтры пустые обновляем значения фильтрованых коктлей на все
+          let reload_counter = 0
+          Object.keys(filters).forEach(i=>{
+            reload_counter += filters[i].length
+            
+          })
+          if(reload_counter == 0){
+            state.filtered_coctails=state.coctails
+            this.commit('uniqAndCount', {obj:state.tags_origin, fieldName:'tag', title:'Категории', model:'tags'})
+            this.commit('uniqAndCount', {obj:state.ings_origin, fieldName:'ingredient', title:'Ингредиенты', model:'ings'})
+            this.commit('uniqAndCount', {obj:state.tools_origin, fieldName:'name', title:'Штуки', model:'tools'})
+
+            
+
+            return state.filtered_coctails
+          }
+
 
           // console.log(filters)
           let tagsName = {
@@ -110,56 +142,79 @@ export default new Vuex.Store({
                   let c_id = origin_tags[otr]['coctail_id']
                   
                   if(origin_tags[otr][filterName] == fi){
-                    console.log('совпадение')
+                    // console.log('совпадение')
                     line_filtered_idx.push(c_id)
                   }
                 }
 
               }
               if(state.filtered_coctail_idx.length==0){
-                state.filtered_coctail_idx = line_filtered_idx
+                // state.filtered_coctail_idx = line_filtered_idx
+                filtered_ids = line_filtered_idx
               }else{
-                console.log('пересечение')
-                state.filtered_coctail_idx = state.filtered_coctail_idx.filter(x => line_filtered_idx.includes(x));
+                // console.log('пересечение')
+                // state.filtered_coctail_idx = state.filtered_coctail_idx.filter(x => line_filtered_idx.includes(x));
+                filtered_ids = line_filtered_idx.filter(x => line_filtered_idx.includes(x))
               }
             }
           }
-          console.log(state.filtered_coctail_idx)
-          filtered_coctails = coctails.filter(x=>state.filtered_coctail_idx.includes(x.coctail_id))
-          
-          this.commit('uniqAndCount', {obj:state.tags_origin, fieldName:'tag', title:'Категории', model:'tags'})
-          this.commit('uniqAndCount', {obj:state.ings_origin, fieldName:'ingredient', title:'Ингредиенты', model:'ings'})
-          this.commit('uniqAndCount', {obj:state.tools_origin, fieldName:'name', title:'Штуки', model:'tools'})
+          // console.log(filtered_ids)
+          // console.log(state.filtered_coctail_idx)
+          // filtered_coctails = coctails.filter(x=>state.filtered_coctail_idx.includes(x.coctail_id))
+          filtered_coctails = coctails.filter(x=>filtered_ids.includes(x.coctail_id))
 
-          console.log(filtered_coctails)
-          state.coctails = filtered_coctails
-          return filtered_coctails
+          
+          this.commit('uniqAndCount', {obj:state.tags_origin, fieldName:'tag', title:'Категории', model:'tags'}, filtered_ids)
+          this.commit('uniqAndCount', {obj:state.ings_origin, fieldName:'ingredient', title:'Ингредиенты', model:'ings'}, filtered_ids)
+          this.commit('uniqAndCount', {obj:state.tools_origin, fieldName:'name', title:'Штуки', model:'tools'}, filtered_ids)
+
+          // console.log(filtered_coctails)
+          // console.log(state.coctails)
+          // console.log(filters)
+
+          state.filtered_coctails = filtered_coctails
+          
+          return state.filtered_coctails
+        },
+
+        stateRestart(state) {
+          
+          state = stateTemplate
+          console.log(state)
         },
         
-        uniqAndCount(state, paylod){
-          // console.log(paylod)
+        uniqAndCount(state, paylod, f_idx=false){
+          console.log('uniqAndCount')
+          console.log(paylod)
           let obj = paylod.obj
           let fieldName = paylod.fieldName
           let model = paylod.model
+          // if('f_idx' in paylod){
+          //   f_idx = paylod.f_idx
+          //   console.log('yes f_idx')
+          // }else{
+          //   console.log('no f_idx')
+          //   // f_idx = []
+          // }
+          console.log(f_idx)
+
+          // paylod.f_idx?f_idx = paylod.f_idx: []
+
           let namedArr = localStorage.getItem('cApp_'+model)
           state[model+'_origin'] = obj
 
-          // if(namedArr){
-          //   let jsArr = JSON.parse(namedArr)
-          //   state[model] = jsArr
-            
-          //   return  JSON.parse(namedArr)
-          // }
-
-          // console.log(obj)
-          //Если установлены фильтры берем только те теги что подходят
-          // console.log(state.filtered_coctail_idx.length)
           if(state.filtered_coctail_idx.length>0){
             let set = obj.filter(i=> state.filtered_coctail_idx.includes(i.coctail_id) )
             obj=set
           }
+          // if(f_idx.length>0){
+          //   let set = obj.filter(i=> f_idx.includes(i.coctail_id) )
+          //   obj=set
+          // }
 
           const unique = [...new Set(obj.map(item => item[fieldName]))];
+
+          console.log(model, unique.length)
           let uniqueAndCountArr = []
           unique.forEach((i)=>{
               let count = obj.filter((item)=>{
@@ -173,7 +228,7 @@ export default new Vuex.Store({
           // localStorage.setItem('cApp_'+model, JSON.stringify(namedArr))
 
           state[model] = namedArr
-          // console.log(namedArr.tags)
+          // console.log(model, namedArr.tags)
           return true
       },
     }
