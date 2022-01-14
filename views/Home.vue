@@ -11,6 +11,11 @@
     >
       <i class="material-icons">autorenew</i>
     </a>
+
+    <activeTags 
+
+    />
+    
     <div>
       Найдено: {{ $store.state.filtered_coctails.length }}
     </div>  
@@ -39,6 +44,8 @@
 import ColapseFilters from '../components/colapseFilters.vue'
 import M from 'materialize-css'
 
+
+import activeTags from '../components/activeTags.vue'
 import Cards from '../components/Cards'
 import Pagination from '../components/Pagination'
 
@@ -47,6 +54,7 @@ export default {
   name: 'App',
 
   components: {
+    activeTags,
     ColapseFilters,
     Cards,
     Pagination

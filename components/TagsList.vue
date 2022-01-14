@@ -2,7 +2,7 @@
     <div>
         <div class="mychip chip"
         v-for="(t, index) in tagsData.tags"
-        :class="setActiveClass(tags.model, t.tag)?'chip_active':''"
+        v-show="!setActiveClass(tags.model, t.tag)"
         @click="localAddTag(t.tag, tags.model)"
         :key="index"
         >
@@ -17,6 +17,8 @@
 
 
 export default({
+
+    //        :class="setActiveClass(tags.model, t.tag)?'chip_active':''"
     name: 'TagsList',
     props:{
         tags: Object,
@@ -24,6 +26,7 @@ export default({
     data: () => ({
         filters:{},
         tagsData:{},
+        currentTagState:false
     }),
     created(){
         this.tagsData = this.tags
@@ -42,7 +45,9 @@ export default({
 
         },
         setActiveClass(model, tag){
+            this.currentTagState = false
             if(this.filters[model] && this.filters[model].indexOf(tag)!=-1){
+                this.currentTagState = true
                 return true
             }
             
