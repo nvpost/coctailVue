@@ -6,11 +6,13 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view/> -->
-    <a class="btn "
-      @click="restart()"    
-    >
-      <i class="material-icons">autorenew</i>
-    </a>
+    <div class="reloadBtn">
+      <a class="btn "
+        @click="restart()"    
+      >
+        <i class="material-icons">autorenew</i>
+      </a>
+    </div>
 
     <activeTags 
 
